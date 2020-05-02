@@ -51,10 +51,6 @@ if __name__ == '__main__':
         x_train.append(x_list)
         y_train.append([(values[i + TIME_STEPS][0] - min_value) / (max_value - min_value)])
 
-    x_test = x_train[0:10000]
-    x_train = x_train[10000:]
-    y_test = y_train[0:10000]
-    y_train = y_train[10000:]
     x_train = np.array(x_train)
 
     model = keras.Sequential()
