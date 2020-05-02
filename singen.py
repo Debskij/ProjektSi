@@ -13,13 +13,13 @@ def singen(mnoznik, wielkosc_datasetu, czestosc_anomali):
         iter_per_sin = 2 * math.pi / step
         itx = 0
         while itx < iter_per_sin:
-            values.append(math.sin(itx * step))
+            values.append([len(values), math.sin(itx * step)])
             itx += 1
             if random.random() < float(czestosc_anomali):
                 anomalies.append(len(values))
                 break
             if random.random() > 1-float(czestosc_anomali):
-                values[-1] = values[-1] * random.uniform(float(1/mnoznik), float(mnoznik))
+                values[-1][1] = values[-1][1] * random.uniform(float(1/mnoznik), float(mnoznik))
     return [values, anomalies]
 
 x_train = []
@@ -27,15 +27,15 @@ y_train = []
 values, anomalies = singen(4, 100000, 0.01)
 
 TIME_STEPS = 30
-max_value = max(values)
-min_value = min(values)
+max_value = max([x[1] for x in values])
+min_value = min([x[1] for x in values])
 
 for i in range(len(values) - TIME_STEPS):
     x_list = []
     for x1 in values[i:i + TIME_STEPS]:
-        x_list.append([(x1 - min_value) / (max_value - min_value)])
+        x_list.append([(x1[0] - min_value) / (max_value - min_value)])
     x_train.append(x_list)
-    y_train.append([(values[i + TIME_STEPS] - min_value) / (max_value - min_value)])
+    y_train.append([(values[i + TIME_STEPS][1] - min_value) / (max_value - min_value)])
 
 x_test = x_train[0:10000]
 x_train = x_train[10000:]
@@ -62,7 +62,7 @@ model.summary()
 
 history = model.fit(
     x_train, np.array(y_train),
-    epochs=15,
+    epochs=3,
     batch_size=32,
     validation_split=0.1,
     shuffle=False
