@@ -100,11 +100,6 @@ for y1 in y_test:
 for ys in X_test_pred:
     pred_plot.append(ys[0] * (max_value - min_value) + min_value)
 
-for i in range(len(x_test)):
-    if i not in anomalies.index:
-        pred_plot[i] = (y_test[i][0] * (max_value - min_value)) + min_value
-    else:
-        pred_plot[i] = (pred_plot[i] + data[i] + data[i]) / 3
 
 plt.figure(figsize=(20, 10))
 plt.plot(pred_plot, '-rD', markevery=list(anomalies.index), markeredgewidth=0.02, markerfacecolor="green")
@@ -120,6 +115,6 @@ plt.savefig(f'{file_name}_anomaly.png')
 plt.figure(figsize=(20, 10))
 plt.plot(pred_plot)
 plt.plot(y_plot)
-
+plt.savefig(f'{file_name}_diffrence.png')
 
 
