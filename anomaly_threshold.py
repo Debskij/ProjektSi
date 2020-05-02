@@ -46,7 +46,7 @@ TIME_STEPS = 30
 
 # %%
 
-data = open(f"data/{file_name}.csv")
+data = open(f"data1/{file_name}.csv")
 close_value = []
 x_test = []
 y_test = []
@@ -133,5 +133,3 @@ plt.plot(pred_plot)
 plt.plot(y_plot)
 
 # %%
-
-
