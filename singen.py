@@ -19,7 +19,7 @@ def singenAnomal(mnoznik, wielkosc_datasetu, czestosc_anomali):
                 anomalies.append(len(values))
                 break
             if random.random() > 1-float(czestosc_anomali):
-                values[-1][0] = values[-1][0] * random.uniform(float(1/mnoznik), float(mnoznik))
+                values[-1][0] = values[-1][0] *1.2
     return values
 
 def singen(mnoznik, wielkosc_datasetu):
@@ -33,12 +33,11 @@ def singen(mnoznik, wielkosc_datasetu):
             values.append([math.sin(itx * step) + 2])
             itx += 1
     return values
-
 if __name__ == '__main__':
 
     x_train = []
     y_train = []
-    values = singen(4, 100000)
+    values = singenAnomal(4, 100000,0.01)
 
     TIME_STEPS = 30
     max_value = max([x[0] for x in values])
@@ -68,13 +67,13 @@ if __name__ == '__main__':
 
     history = model.fit(
         x_train, np.array(y_train),
-        epochs=5,
+        epochs=10,
         batch_size=32,
         validation_split=0.1,
         shuffle=False
     )
 
-    model.save("sinmodel.h5")
+    model.save("sinmodel1.h5")
     plt.plot(history.history['loss'], label='train')
     plt.plot(history.history['val_loss'], label='test')
     plt.legend()

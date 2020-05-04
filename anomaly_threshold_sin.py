@@ -30,8 +30,8 @@ def percent_treshold(test_mae_loss):
 def normalised_treshold(test_mae_loss):
     # pom = list(test_mae_loss)
     # pom = signal_smoothing(8, 3, pom)
-    TRESHOLD = gauss_smoothing(5, test_mae_loss) * 2.5
-    return TRESHOLD
+    TRESHOLD = gauss_smoothing(5, test_mae_loss) * 3.5
+    return np.average(TRESHOLD)
 
 
 def stdev_treshold(test_mae_loss):
@@ -41,8 +41,8 @@ def stdev_treshold(test_mae_loss):
 
 # %%
 
-file_name = "sin"
-model = load_model("sinmodel.h5")
+file_name = "sinsmallanomal"
+model = load_model("sinmodel1.h5")
 TIME_STEPS = 30
 
 # %%
@@ -66,9 +66,17 @@ for i in range(len(data) - TIME_STEPS):
 
 X_test_pred = model.predict(x_test)
 
-test_mae_loss = np.mean(np.abs((X_test_pred - x_test)), axis=1)
-test_mae_loss = [i / j for i, j in zip(test_mae_loss, data)]
-test_mae_loss = signal_smoothing(20, 2, test_mae_loss)
+pred_plot = []
+y_plot = []
+for y1 in y_test:
+    y_plot.append(y1[0] * (max_value - min_value) + min_value)
+
+for ys in X_test_pred:
+    pred_plot.append(np.average(ys) * (max_value - min_value) + min_value)
+
+test_mae_loss = [abs(x-y) for x, y in zip(y_plot, pred_plot)]
+test_mae_loss = [i / j for i, j in zip(test_mae_loss, y_plot)]
+#test_mae_loss = signal_smoothing(20, 2, test_mae_loss)
 label_x = list(np.arange(len(test_mae_loss)))
 THRESHOLD = normalised_treshold(test_mae_loss)
 # %%
@@ -92,13 +100,7 @@ anomalies.head()
 
 # %%
 
-pred_plot = []
-y_plot = []
-for y1 in y_test:
-    y_plot.append(y1[0] * (max_value - min_value) + min_value)
 
-for ys in X_test_pred:
-    pred_plot.append(ys[0] * (max_value - min_value) + min_value)
 
 
 plt.figure(figsize=(20, 10))
