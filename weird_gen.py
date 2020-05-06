@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     x_train = []
     y_train = []
-    values = weird_gen(3, 4, 100000, [5, 20])
+    values = weird_gen(3, 4, 200000, [5, 20])
 
     TIME_STEPS = 30
     max_value = max([x for x in values])
