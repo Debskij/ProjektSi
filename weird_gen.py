@@ -18,6 +18,28 @@ def weird_gen(stopien_wielomianu: int, maksymalny_mnoznik: float, data_sample: i
                         j / 2 * math.pi)))
     return [x for x in some_fun if x > 1e-5]
 
+def weird_gen_anomaly(stopien_wielomianu: int, maksymalny_mnoznik: float, data_sample: int, okres: list):
+    some_fun = []
+    while len(some_fun) < data_sample * 2:
+        noice = bool(random.random() < 0.3)
+        polinomial = [maksymalny_mnoznik*(2.1*random.random() - 1) for x in range(stopien_wielomianu)]
+        period = (random.random() * (okres[1] - okres[0]) + okres[0]) * 10
+        for i in range(int(period)):
+            first = abs(sum([val*i**idx*math.pi/10 for idx, val in enumerate(polinomial)]) * math.sin(i/2*math.pi))
+            if noice:
+                some_fun.append((random.random()*0.4+0.8)*first)
+            else:
+                some_fun.append(first)
+        if random.random() < 0.8:
+            for j in range(int(period), 0, -1):
+                first = abs(sum([val * j ** idx * math.pi / 10 for idx, val in enumerate(polinomial)]) * math.sin(
+                    j / 2 * math.pi))
+                if noice:
+                    some_fun.append((random.random() * 0.8 + 0.6) * first)
+                else:
+                    some_fun.append(first)
+    return [x for x in some_fun if x > 1e-5]
+
 
 # val = weird_gen(3, 4, 1000, [1, 20])
 #
