@@ -4,13 +4,15 @@ import matplotlib.pyplot as plt
 from tensorflow import keras
 import numpy as np
 
+
 def weird_gen(stopien_wielomianu: int, maksymalny_mnoznik: float, data_sample: int, okres: list):
     some_fun = []
     while len(some_fun) < data_sample * 2:
-        polinomial = [maksymalny_mnoznik*(2.1*random.random() - 1) for x in range(stopien_wielomianu)]
+        polinomial = [maksymalny_mnoznik * (2.1 * random.random() - 1) for x in range(stopien_wielomianu)]
         period = (random.random() * (okres[1] - okres[0]) + okres[0]) * 10
         for i in range(int(period)):
-            some_fun.append(abs(sum([val*i**idx*math.pi/10 for idx, val in enumerate(polinomial)]) * math.sin(i/2*math.pi)))
+            some_fun.append(abs(
+                sum([val * i ** idx * math.pi / 10 for idx, val in enumerate(polinomial)]) * math.sin(i / 2 * math.pi)))
         if random.random() < 1:
             for j in range(int(period), 0, -1):
                 some_fun.append(abs(
@@ -18,16 +20,18 @@ def weird_gen(stopien_wielomianu: int, maksymalny_mnoznik: float, data_sample: i
                         j / 2 * math.pi)))
     return [x for x in some_fun if x > 1e-5]
 
+
 def weird_gen_anomaly(stopien_wielomianu: int, maksymalny_mnoznik: float, data_sample: int, okres: list):
     some_fun = []
     while len(some_fun) < data_sample * 2:
         noice = bool(random.random() < 0.3)
-        polinomial = [maksymalny_mnoznik*(2.1*random.random() - 1) for x in range(stopien_wielomianu)]
+        polinomial = [maksymalny_mnoznik * (2.1 * random.random() - 1) for x in range(stopien_wielomianu)]
         period = (random.random() * (okres[1] - okres[0]) + okres[0]) * 10
         for i in range(int(period)):
-            first = abs(sum([val*i**idx*math.pi/10 for idx, val in enumerate(polinomial)]) * math.sin(i/2*math.pi))
+            first = abs(
+                sum([val * i ** idx * math.pi / 10 for idx, val in enumerate(polinomial)]) * math.sin(i / 2 * math.pi))
             if noice:
-                some_fun.append((random.random()*0.4+0.8)*first)
+                some_fun.append((random.random() * 0.4 + 0.8) * first)
             else:
                 some_fun.append(first)
         if random.random() < 0.8:
@@ -49,7 +53,7 @@ if __name__ == '__main__':
 
     x_train = []
     y_train = []
-    values = weird_gen(3, 4, 200000, [5, 20])
+    values = weird_gen_anomaly(3, 4, 200000, [5, 20])
 
     TIME_STEPS = 30
     max_value = max([x for x in values])
