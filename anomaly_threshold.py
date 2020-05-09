@@ -29,7 +29,7 @@ def percent_treshold(test_mae_loss):
 def normalised_treshold(test_mae_loss):
     # pom = list(test_mae_loss)
     # pom = signal_smoothing(8, 3, pom)
-    TRESHOLD = gauss_smoothing(5, test_mae_loss) * 2.5
+    TRESHOLD = gauss_smoothing(5, test_mae_loss) * 3.5
     return np.average(TRESHOLD)
 
 def stdev_treshold(test_mae_loss):
@@ -39,7 +39,7 @@ def stdev_treshold(test_mae_loss):
 
 # %%
 
-file_name = "INTC"
+file_name = "FAST"
 model = load_model("1000files_64.h5")
 TIME_STEPS = 30
 
